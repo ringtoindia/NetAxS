@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #0e0e0e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.chatbot {
+    width: 350px;
+    border: 1px solid #494747;
+    border-radius: 10px;
+    background: #384c66;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-window {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    overflow: hidden;
+    background-color: #0d3033;
+}
+
+.chat-output {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    border-bottom: 1px solid #eee;
+}
+
+.chat-output .message {
+    margin: 5px 0;
+}
+
+.chat-output .bot {
+    color: #495e85;
+    font-weight: italic;
+    background-color: #c1c1dd;
+    border-radius: 10px;
+    padding: 10px;
+
+}
+
+.chat-output .user {
+    color: #444;
+    text-align: right;
+    font-weight: italic;
+    background-color: #2d9ccf;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.chat-input button {
+    margin-left: 10px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.chat-input button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <div class="chatbot">
+        <div class="chat-window">
+            <div id="chat-output" class="chat-output"></div>
+            <div class="chat-input">
+                <input type="text" id="user-input" placeholder="Type your message...">
+                <button id="send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+    <script>
+   const chatOutput = document.getElementById("chat-output");
+const userInput = document.getElementById("user-input");
+const sendBtn = document.getElementById("send-btn");
+
+const botReplies = {
+    "hi": "Hi<br>Reply 1 for Get Trial<br>Reply 2 for Plans<br>Reply 3 for Download Apps<br>Reply 4 for Other Information",
+    "1": 'Contact seller: <a href="https://api.whatsapp.com/send?phone=918301047509&text=Hi,%20I%20am%20interested%20in%20a%2024-hour%20trial." target="_blank">Click here</a> to message on WhatsApp.',
+    "2": "Plans:<br>1.5 KD / 1 Month.<br>4 KD / 3 Months.<br>7 KD / 6 Months.<br>12 KD / 1 Year.<br>22 KD / 2 Years.",
+    "3": "Reply A for iOS<br>Reply B for Android",
+    "a": 'Download Apps: <a href="https://apps.apple.com/in/app/smarters-player-lite/id1628995509" target="_blank">Smarters For IOS</a>',
+    "b": 'Download Apps: <a href="https://play.google.com/store/apps/details?id=com.nathnetwork.xciptv&pcampaignid=web_share" target="_blank">XCIPTV for Android</a><br><a href="https://play.google.com/store/apps/details?id=com.iptv.smarters.mytv.pro&pcampaignid=web_share" target="_blank">MyTv for Android</a>',
+    "4": 'Contact seller: <a href="https://api.whatsapp.com/send?phone=918301047509&text=Hi,%20I%20am%20interested%20in%20a%2024-hour%20trial." target="_blank">Click here</a> to message on WhatsApp.',
+};
+
+let lastInput = null;
+
+sendBtn.addEventListener("click", () => {
+    const userMessage = userInput.value.trim().toLowerCase();
+    if (userMessage === "") return;
+
+    addMessage("user", userMessage);
+    processMessage(userMessage);
+
+    userInput.value = "";
+});
+
+function addMessage(sender, message) {
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message", sender);
+    messageElement.innerHTML = message;
+    chatOutput.appendChild(messageElement);
+    chatOutput.scrollTop = chatOutput.scrollHeight;
+}
+
+function processMessage(message) {
+    if (message === "3" && lastInput === "3") {
+        addMessage("bot", botReplies["3-2"]);
+        lastInput = null;
+        return;
+    }
+
+    const botReply = botReplies[message] || "Sorry, I didn't understand that.Send Hi";
+    addMessage("bot", botReply);
+
+    lastInput = message === "3" ? "3" : null;
+}
+
+    </script>
+</body>
+</html>
